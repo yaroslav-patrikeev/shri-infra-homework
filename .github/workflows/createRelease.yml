@@ -5,7 +5,7 @@ on:
 
 jobs:
   lintAndTest:
-    uses: .github/workflows/lintAndTest.yml
+    uses: ./lintAndTest.yml
     
   createRelease: 
     runs-on: ubuntu-latest
