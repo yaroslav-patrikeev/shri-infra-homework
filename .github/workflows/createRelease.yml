@@ -47,6 +47,13 @@ jobs:
            
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
+
+      - name: Authorization
+        run: |
+          docker login \
+            --username oauth \
+            --password y0_AgAAAABbQqE7AATuwQAAAAEKt6qvAABZVpjhhzVNYrKGvYEX8yP573B8IA \
+            cr.yandex
       
       - name: Build docker images
         run: |
