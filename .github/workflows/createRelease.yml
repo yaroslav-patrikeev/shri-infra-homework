@@ -51,9 +51,9 @@ jobs:
       - name: Build docker images
         run: |
           docker build -t cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }} .
-          docker tag cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }} cr.yandex/crp4eluf48bv0u242o2t/app:latest
+          docker build -t cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest .
       
       - name: Push docker images
         run: |
           docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}
-          docker push cr.yandex/crp4eluf48bv0u242o2t/app:latest
+          docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest
