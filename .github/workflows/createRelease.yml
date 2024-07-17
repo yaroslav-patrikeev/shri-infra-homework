@@ -55,9 +55,10 @@ jobs:
             --password y0_AgAAAABbQqE7AATuwQAAAAEKt6qvAABZVpjhhzVNYrKGvYEX8yP573B8IA \
             cr.yandex
       
-      - name: Build docker images
-        run: |
-          docker build -t cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }} -t cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest .
-      
-      - name: Push docker images
-        run: docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}
+      - name: Build/Push Main
+        run: docker build -t cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }} . \
+             docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}
+        
+      - name: Tag/Push Latest
+        run: docker tag cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }} cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest \
+             docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest
