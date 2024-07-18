@@ -65,18 +65,15 @@ jobs:
            docker tag cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }} cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest
            docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest
       - name: Create Issue
-        uses: dacbd/create-issue-action@main
-        with:
-          token: ${{ github.token }}
-          title: |
-            Создан новый релиз [${{ github.run_number }}]
-          assignees: ${{ github.triggering_actor }}
-          labels: CICD
-          body: |
-            ## Отчет о релизе
-
-            - Дата: $(date)
-            - Автор релиза: ${{ github.triggering_actor }}
-            - Номер версии: ${{ github.run_number }}
-            - Список коммитов:
-            - Ссылка на docker-образ: cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}
+        run: |
+          touch $ISSUE
+          echo "## Отчет о релизе" >> $ISSUE
+          echo "- Дата: $(date)" >> $ISSUE
+          echo "- Автор релиза: ${{ github.triggering_actor }}" >> $ISSUE
+          echo "- Номер версии: ${{ github.run_number }}" >> $ISSUE
+          echo "- Список коммитов:" >> $ISSUE
+          echo "- Ссылка на docker-образ: cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}" >> $ISSUE
+          gh issue create --title "Создан новый релиз [${{ github.run_number }}]" --body-file $ISSUE
+          rm $ISSUE
+        env:
+          FILE: issue.txt
