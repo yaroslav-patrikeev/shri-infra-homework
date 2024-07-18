@@ -71,10 +71,22 @@ jobs:
           echo "- Автор релиза: ${{ github.triggering_actor }}" >> $ISSUE
           echo "- Номер версии: ${{ github.run_number }}" >> $ISSUE
           echo "- Список коммитов:" >> $ISSUE
-          git log >> $ISSUE
-          echo "- Ссылка на docker-образ: [cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}](cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }})" >> $ISSUE
+          git log --pretty=oneline >> $ISSUE
+          echo "- Ссылка на docker-образ: cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}" >> $ISSUE
           gh issue create --title "Создан новый релиз [${{ github.run_number }}]" --body-file $ISSUE
           rm $ISSUE
         env:
           ISSUE: issue.txt
           GH_TOKEN: ${{ github.token }}
+      - name: CHANGELOG
+        run: |
+          touch $TEMP
+          cat $CHANGELOG > $TEMP
+          touch $CHANGELOG
+          echo "## ${{ github.run_number }}" >> $CHANGELOG
+          git log --pretty=oneline >> $CHANGELOG
+          cat $TEMP >> $CHANGELOG
+          rm $TEMP
+        env:
+          CHANGELOG: CHANGELOG.md
+          TEMP: CHANGELOG_TEMP.md
