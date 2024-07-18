@@ -76,4 +76,4 @@ jobs:
           gh issue create --title "Создан новый релиз [${{ github.run_number }}]" --body-file $ISSUE
           rm $ISSUE
         env:
-          FILE: issue.txt
+          ISSUE: issue.txt
