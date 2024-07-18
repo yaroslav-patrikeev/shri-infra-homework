@@ -86,8 +86,10 @@ jobs:
           echo "## ${{ github.run_number }}" >> $CHANGELOG
           git log --pretty=oneline >> $CHANGELOG
           cat $TEMP >> $CHANGELOG
-          cat $CHANGELOG
           rm $TEMP
+          git add CHANGELOG.md
+          git commit -m "Обновление changelog в связи с релизом ${{ github.run_number }}"
+          git push origin releases/${{ github.run_number }}
         env:
           CHANGELOG: CHANGELOG.md
           TEMP: CHANGELOG_TEMP.md
