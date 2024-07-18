@@ -89,6 +89,7 @@ jobs:
           rm $TEMP
           git config --global user.email "yaroslav.patrikeev@gmail.com"
           git config --global user.name "Yaroslav"
+          cat $CHANGELOG
           git add CHANGELOG.md
           git commit -m "Обновление changelog в связи с релизом ${{ github.run_number }}"
           git push origin releases/${{ github.run_number }}
