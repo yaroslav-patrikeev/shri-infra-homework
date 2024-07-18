@@ -31,8 +31,6 @@ jobs:
     
   createRelease: 
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.TOKEN }}
     needs: [test, lint]
     steps:
       - name: Checkout repository
@@ -78,3 +76,4 @@ jobs:
           rm $ISSUE
         env:
           ISSUE: issue.txt
+          GH_TOKEN: ${{ github.token }}
