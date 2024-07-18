@@ -41,7 +41,7 @@ jobs:
           git config --global user.email "yaroslav.patrikeev@gmail.com"
           git config --global user.name "Yaroslav"
 
-      - name: Создание релизной ветки
+      - name: Создание релизной ветки и тега
         run: |
           git checkout -b releases/${{ github.run_number }}
           git push origin releases/${{ github.run_number }}
