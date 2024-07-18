@@ -86,6 +86,7 @@ jobs:
           echo "## ${{ github.run_number }}" >> $CHANGELOG
           git log --pretty=oneline >> $CHANGELOG
           cat $TEMP >> $CHANGELOG
+          cat $CHANGELOG
           rm $TEMP
         env:
           CHANGELOG: CHANGELOG.md
