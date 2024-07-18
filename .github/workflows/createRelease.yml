@@ -73,9 +73,9 @@ jobs:
           assignees: ${{ github.triggering_actor }}
           labels: CICD
           body: |
-            ## Отчет о релизе:
+            ## Отчет о релизе
 
-            - Дата: ${{ steps.date.outputs.date }}
+            - Дата: $(date)
             - Автор релиза: ${{ github.triggering_actor }}
             - Номер версии: ${{ github.run_number }}
             - Список коммитов:
