@@ -24,6 +24,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            docker login --username oauth --password ${{ secrets.PASSWORD }} cr.yandex
             sudo docker pull cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
             sudo docker stop new_container || true
             sudo docker rm new_container || true
