@@ -24,11 +24,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker login --username oauth --password ${{ secrets.PASSWORD }} cr.yandex
-            sudo docker pull cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
-            sudo docker stop new_container || true
-            sudo docker rm new_container || true
-            sudo docker run --name new_container -p 3000:3000 cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
+            docker pull cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
+            docker stop new_container || true
+            docker rm new_container || true
+            docker run --name new_container -p 3000:3000 cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
 
       - name: Проверка репозитория
         uses: actions/checkout@v4
