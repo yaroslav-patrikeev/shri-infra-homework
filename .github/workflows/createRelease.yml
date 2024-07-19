@@ -68,7 +68,7 @@ jobs:
           docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest
       - name: Create Release Label
         run: |
-          gh label create "релиз ${{ github.run_number }}""
+          gh label create "релиз ${{ github.run_number }}"
         env:
           GH_TOKEN: ${{ github.token }}
 
