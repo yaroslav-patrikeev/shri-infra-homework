@@ -27,7 +27,7 @@ jobs:
             docker pull cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
             docker stop new_container || true
             docker rm new_container || true
-            docker run --name new_container -p 3000:3000 cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
+            docker run -d --name new_container -p 3000:3000 cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
 
       - name: Проверка репозитория
         uses: actions/checkout@v4
