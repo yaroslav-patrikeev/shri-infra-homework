@@ -1,7 +1,11 @@
-name: Создать релиз
+name: Создать фикс
 
-on: workflow_dispatch
-
+on:
+  workflow_dispatch:
+    inputs:
+      release_version:
+        required: true
+        description: Укажите версию релиза для фикса
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -27,8 +31,7 @@ jobs:
           cache: "npm"
       - run: npm ci
       - run: npm run lint
-
-  createRelease:
+  createFix:
     runs-on: ubuntu-latest
     needs: [test, lint]
     steps:
@@ -40,11 +43,10 @@ jobs:
           git config --global user.email "yaroslav.patrikeev@gmail.com"
           git config --global user.name "Yaroslav"
 
-      - name: Создание релизной ветки и тега
+      - name: Переключение на указанную релизную ветку
         run: |
-          git checkout -b releases/${{ github.run_number }}
-          git push origin releases/${{ github.run_number }}
-          git tag -a v${{ github.run_number }}
+          git checkout releases/${{ github.event.inputs.release_version }}
+          git tag -a v${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
           git push origin --tags
 
       - name: Setup Docker Buildx
@@ -59,43 +61,26 @@ jobs:
 
       - name: Создание основного образа и push
         run: |
-          docker build -t cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }} .
-          docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}
+          docker build -t cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_fix${{ github.run_number }} .
+          docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
 
       - name: Добавление тега _latest и push
         run: |
-          docker tag cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }} cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest
-          docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}_latest
+          docker tag cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_fix${{ github.run_number }} cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
+          docker push cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
 
-      - name: Создание Issue
+      - name: Комментарий к Issue
         run: |
           touch $ISSUE
-          echo "## Отчет о релизе" >> $ISSUE
+          echo "## Отчет о фиксе релиза" >> $ISSUE
           echo "- Дата: $(date)" >> $ISSUE
-          echo "- Автор релиза: ${{ github.triggering_actor }}" >> $ISSUE
-          echo "- Номер версии: ${{ github.run_number }}" >> $ISSUE
+          echo "- Автор фикса: ${{ github.triggering_actor }}" >> $ISSUE
           echo "- Список коммитов:" >> $ISSUE
           git log --pretty=oneline >> $ISSUE
           echo "- Ссылка на docker-образ: cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}" >> $ISSUE
-          gh issue create --title "Релиз ${{ github.run_number }}" --body-file $ISSUE
+          number=$(gh issue list --search "label:"Релиз ${{ github.event.inputs.release_version }}")
+          gh issue comment "$number" --body-file "$ISSUE"
           rm $ISSUE
         env:
           ISSUE: issue.txt
           GH_TOKEN: ${{ github.token }}
-
-      - name: Обновление файла CHANGELOG.md
-        run: |
-          touch $TEMP
-          cat $CHANGELOG > $TEMP
-          touch $CHANGELOG
-          echo "## ${{ github.run_number }}" >> $CHANGELOG
-          git log --pretty=oneline >> $CHANGELOG
-          cat $TEMP >> $CHANGELOG
-          rm $TEMP
-          cat $CHANGELOG
-          git add CHANGELOG.md
-          git commit -m "Обновление changelog в связи с релизом ${{ github.run_number }}"
-          git push origin releases/${{ github.run_number }}
-        env:
-          CHANGELOG: CHANGELOG.md
-          TEMP: CHANGELOG_TEMP.md
