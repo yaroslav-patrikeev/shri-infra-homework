@@ -38,7 +38,7 @@ jobs:
           echo "## Релиз выкачен в прод" >> $ISSUE
           echo "- Дата: $(date)" >> $ISSUE
           echo "- Автор: ${{ github.triggering_actor }}" >> $ISSUE
-          number=$(gh issue list --search "label:Релиз ${{ github.event.inputs.release_version }}")
+          number=$(gh issue list --search "title:Релиз ${{ github.event.inputs.release_version }}")
           gh issue comment "$number" --body-file "$ISSUE"
           rm $ISSUE
         env:
