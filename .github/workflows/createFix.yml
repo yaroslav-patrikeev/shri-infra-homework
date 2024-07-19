@@ -46,7 +46,7 @@ jobs:
       - name: Переключение на указанную релизную ветку
         run: |
           git checkout releases/${{ github.event.inputs.release_version }}
-          git tag -a v${{ github.event.inputs.release_version }}_fix${{ github.run_number }}
+          git tag -a v${{ github.event.inputs.release_version }}_fix${{ github.run_number }} -m 'Фикс релиза ${{ github.run_number }}'
           git push origin --tags
 
       - name: Setup Docker Buildx

@@ -44,7 +44,7 @@ jobs:
         run: |
           git checkout -b releases/${{ github.run_number }}
           git push origin releases/${{ github.run_number }}
-          git tag -a v${{ github.run_number }}
+          git tag -a v${{ github.run_number }} -m 'Релиз ${{ github.run_number }}'
           git push origin --tags
 
       - name: Setup Docker Buildx
