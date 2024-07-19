@@ -20,9 +20,9 @@ jobs:
       - name: Подключение по SSH и деплой
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST  }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: "158.160.145.64"
+          username: "patrikeev"
+          key: "b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZWQyNTUxOQAAACCuzFrlzZJguNpyY8cVnenJOOKNyoq4HggksgRLkurHMAAAAKDytsWm8rbFpgAAAAtzc2gtZWQyNTUxOQAAACCuzFrlzZJguNpyY8cVnenJOOKNyoq4HggksgRLkurHMAAAAEAS7Ug3l/uf85+/6QVYjJUDjYi+oSbZ7PF7JqDyig0wzK7MWuXNkmC42nJjxxWd6ck44o3KirgeCCSyBEuS6scwAAAAHHlhcm9zbGF2LnBhdHJpa2VldkBnbWFpbC5jb20B"
           script: |
             docker pull cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.event.inputs.release_version }}_latest
             docker kill $(docker ps -q)
