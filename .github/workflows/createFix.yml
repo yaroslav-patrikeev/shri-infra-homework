@@ -77,7 +77,7 @@ jobs:
           echo "- Список коммитов:" >> $ISSUE
           git log --pretty=oneline >> $ISSUE
           echo "- Ссылка на docker-образ: cr.yandex/crp4eluf48bv0u242o2t/app:${{ github.run_number }}" >> $ISSUE
-          number=$(gh issue list --search "title:Релиз ${{ github.event.inputs.release_version }}")
+          number=$(gh issue list --search "label:релиз ${{ github.event.inputs.release_version }}")
           gh issue comment "$number" --body-file "$ISSUE"
           rm $ISSUE
         env:
